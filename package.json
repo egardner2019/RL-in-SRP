@@ -1,0 +1,19 @@
+{
+  "name": "rl-in-srp",
+  "version": "1.0.0",
+  "description": "An application of reinforcement learning (RL) to the strategic release planning (SRP) problem.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/egardner2019/RL-in-SRP.git"
+  },
+  "author": "Emma Gardner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/egardner2019/RL-in-SRP/issues"
+  },
+  "homepage": "https://github.com/egardner2019/RL-in-SRP#readme"
+}
