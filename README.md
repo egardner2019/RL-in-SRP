@@ -12,3 +12,5 @@ Logic:
     4. Using the calculated rewards, select a requirement from the list of available future requirements.
     5. Add this requirement to the list of requirements to be implemented in the next iteration.
     6. Remove the selected requirement from the list of available future requirements and decrease the reward of the selected term by 25%.
+3. Print the selected and unselected requirements to separate files.
+4. Evaluate the effectiveness of the method (accuracy, precision, recall) using previously planned releases.
