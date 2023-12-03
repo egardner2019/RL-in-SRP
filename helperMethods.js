@@ -42,44 +42,38 @@ const getFeaturesFromFile = async (dataSet) => {
 };
 
 /**
- * Get all of the nouns and verbs of the features included in the given 2-dimensional array
- * @param {*} allFeaturesByRelease The array containing arrays with the textual descriptions of the features of the associated release
- * @returns A 1-dimensional array of all the unique nouns and verbs (lowercased) in all of the given features
+ * Get all of the nouns and verbs of the features included in the given array
+ * @param {string[]} allHistoricalFeatures An array containing the historical features
+ * @returns An array of all the unique nouns and verbs (lowercased) in all of the given features
  */
-const getNounsVerbs = async (allFeaturesByRelease) => {
-  // A sub-method to get the nouns and verbs of all the features of a given release
-  const getNounsVerbsOfRelease = async (releaseArray) => {
-    const nounsAndVerbsOfReleaseArray = await Promise.all(
-      // For each feature in this release, get the nouns and verbs as an array of words
-      releaseArray.map(async (feature) => {
-        const theseNouns = await wordpos.getNouns(feature);
-        const theseVerbs = await wordpos.getVerbs(feature);
-
-        // Return an array containing the nouns and verbs in this feature description
-        return theseNouns.concat(theseVerbs);
-      })
-    );
-
-    // Return a 1-dimensional array containing all of the nouns and verbs in the features of this release
-    return nounsAndVerbsOfReleaseArray.flat(Infinity);
-  };
-
-  // Get all of the nouns and verbs in the historical release features
+const getNounsVerbs = async (allHistoricalFeatures) => {
+  // Get a 2-dimensional array containing all of the nouns and verbs in the features
   let allNounsAndVerbs = await Promise.all(
-    allFeaturesByRelease.map(
-      async (thisReleasesFeatures) =>
-        await getNounsVerbsOfRelease(thisReleasesFeatures)
-    )
+    allHistoricalFeatures.map(async (feature) => {
+      const theseNouns = await wordpos.getNouns(feature);
+      const theseVerbs = await wordpos.getVerbs(feature);
+
+      // Return an array containing the nouns and verbs in this feature description
+      return theseNouns.concat(theseVerbs);
+    })
   );
 
-  // Make the array 1-dimensional
-  allNounsAndVerbs = allNounsAndVerbs.flat(Infinity);
+  // Make the array 1-dimensional and lowercased
+  allNounsAndVerbs = allNounsAndVerbs
+    .flat(Infinity)
+    .map((nounVerb) => nounVerb.toLowerCase());
 
-  // Make all words lowercased
-  allNounsAndVerbs = allNounsAndVerbs.map((nounVerb) => nounVerb.toLowerCase());
+  // Add all of the unique terms with the corresponding rewards (# of occurrences) to the allTermsRewards object
+  const allTermsRewards = {};
+  allNounsAndVerbs.forEach((term) => {
+    // If the term isn't a key of the object, add it with a value of 1, else increment its value
+    allTermsRewards[term] = (allTermsRewards[term] || 0) + 1;
+  });
 
-  // Return the nouns and verbs array with duplicated removed
-  return Array.from(new Set(allNounsAndVerbs));
+  // Return the object with the rewards for the terms
+  return allTermsRewards;
 };
 
-export { getNounsVerbs, getFeaturesFromFile };
+const getFeaturesRewards = (historicalFeatures, availableFeatures, term) => {};
+
+export { getNounsVerbs, getFeaturesFromFile, getFeaturesRewards };
