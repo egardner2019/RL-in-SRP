@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import readXlsxFile, { readSheetNames } from "read-excel-file/node";
 import WordPOS from "wordpos";
 import similarity from "sentence-similarity";
@@ -154,4 +155,26 @@ const chooseAvailableFeature = (
   return max[1];
 };
 
-export { getNounsVerbs, getFeaturesFromFile, chooseAvailableFeature };
+const writeResultsToFiles = (isSelected, featuresArray, dataSet) => {
+  const filePath = `results/${dataSet}/${
+    isSelected ? "selected" : "remaining"
+  }.txt`;
+  const writeStream = fs.createWriteStream(filePath);
+
+  featuresArray.forEach((feature) => writeStream.write(`${feature.feature}\n`));
+
+  writeStream.on("error", (error) => {
+    console.error(
+      `Unable to write data to ${filePath}. Error: ${error.message}`
+    );
+  });
+
+  writeStream.end();
+};
+
+export {
+  getNounsVerbs,
+  getFeaturesFromFile,
+  chooseAvailableFeature,
+  writeResultsToFiles,
+};

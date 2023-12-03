@@ -2,10 +2,11 @@ import {
   getFeaturesFromFile,
   getNounsVerbs,
   chooseAvailableFeature,
+  writeResultsToFiles,
 } from "./helperMethods.js";
 
 // The number of features desired for the next iteration
-const numFeatures = 2;
+const numFeatures = 20;
 
 const mainLogic = async (dataSet) => {
   // Get the features from the .xlsx file (array of arrays, with each subarray designated to a release)
@@ -64,7 +65,10 @@ const mainLogic = async (dataSet) => {
     // Decrease the reward of the selected term by half
     allTerms[selectedTerm] *= 0.5;
   }
-  // Print the selected (selectedFeatures array) and unselected (availableFeatures array) features to separate files
+  // Print the selected (selectedFeatures array) and remaining (availableFeatures array) features to separate files
+  writeResultsToFiles(true, selectedFeatures, dataSet);
+  writeResultsToFiles(false, availableFeatures, dataSet);
+
   // Evaluate the effectiveness of this method (accuracy, precision, recall) -- correct means the feature is from the third release!
 };
 

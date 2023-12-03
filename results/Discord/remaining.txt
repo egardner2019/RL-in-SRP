@@ -1,0 +1,9 @@
+API v8 is now deprecated.
+API v6 and v7 will be decommissioned in early 2023.
+Application Commands can now add an attachment option type.
+Add new documentation for the recently released guild member timeout feature.
+Breaking change for return type for GET /guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}/users.
+Add with_user_count query param for GET /guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}.
+Return additional creator field by default in response for GET /guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}.
+More details and clarification for the guild scheduled events feature.
+Document support for before and after query params for GET /guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}/users.

@@ -1,0 +1,20 @@
+A new permission has also been added: "Send Messages in Threads", which allows users to send a message in a thread. The "Send Messages" permission has no effect in threads: users must have "Send Messages in Threads" to send a message in a thread. This allows for setups where a user can participate in a thread but cannot send a message in the parent channel (like a thread on an announcement post).
+Context menu commands are a type of application command. The "Slash Commands" documentation page has been renamed to "Application Commands" and split out by type to show this.
+GET /channels/{channel.id}/threads/active is decommissioned in favor of GET /guilds/{guild.id}/threads/active.
+The name and description fields for Achievements are now strings, and localization info is now passed in new name_localizations and description_localizations dictionaries. This change standardizes localization to match Application Commands. Read details in the Achievements documentation.
+Thread permissions have been updated and simplified: "Use Public Threads" is now "Create Public Threads", which allows users to create public threads and announcement threads in a channel, even if they cannot send messages in that channel.
+Thread permissions have been updated and simplified: "Use Private Threads" is now "Create Private Threads", which allows users to create private threads in a channel. even if they cannot send messages in that channel.
+To specify a reason for an administrative action in audit logs, apps must now pass the X-Audit-Log-Reason header rather than the reason parameter for all endpoints.
+User commands and message commands are now live! These commands appear on context menus for users and messages. with more to come in the future.
+Existing attachments must be specified when PATCHing messages with new attachments. Any attachments not specified will be removed and replaced with the specified list
+The GET /guilds/{guild.id}/bans endpoint has been migrated to require pagination to improve reliability and stability.
+Requests to v10 and higher will no longer be supported on discordapp.com (this does not affect cdn.discordapp.com).
+Message routes (like POST /channels/{channel.id}/messages) now use the embeds field (an array of embed objects) instead of embed.
+Autocomplete interactions are now available, allowing application commands to provide server completed options.
+The summary field for applications will be removed in the next API version (v11).
+Interaction modals are now available, allowing applications to prompt users for further detailed input.
+Starting in v10. you must specify the message content intent (1 << 15) to receive content-related fields in message dispatches.
+The summary field for applications now returns an empty string for all API versions.
+MESSAGE_CONTENT is becoming a privileged intent for verified bots in 75+ servers on August 31, 2022.
+Add official support for guild_scheduled_events field on Guild resource sent with GUILD_CREATE event.
+Add new documentation for the recently released Guild Scheduled Events feature.

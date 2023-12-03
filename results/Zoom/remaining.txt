@@ -1,0 +1,30 @@
+Improved bandwidth limitation control allows webinar hosts running Production Studio to have an increased upload bitrate to ensure higher quality video. Note: This does consume more bandwidth.
+When creating an event in the main calendar view, users only have to click a time slot once to see the scheduler pop-up window. When users click a time slot twice, the full scheduler page will appear.
+The Submit Feedback option in the Zoom Calendar client dropdown menu will be removed. Users can now submit feedback on the form that is used for all product areas.
+When a user receives an email invitation for a meeting, they can view their schedule around the proposed meeting time and whether they have a conflict or not.
+Users can create templates and share them with their organization. They can select users from their organization by individual, group, chat channel, or include the entire organization. Users can make changes, delete, and limit permissions for the shared templates. Additionally, users can share any existing templates.
+Account owners and admins can upload images to create a Virtual Background library for agents. Agents to view and apply virtual backgrounds in the Zoom desktop client on Windows.
+Zoom Contact Center has made updates to the screen share experience for agents and consumers, mirroring other Zoom products. Agents and consumers have full control over starting, stopping, and pausing screen shares. The new screen share design eliminates any disjointed video experiences and provides a more intuitive and user-friendly interface for agents and consumers.
+To provide higher quality video without also increasing bandwidth usage, Zoom is rolling out a new video codec to free accounts. Use of codecs, including AV1, is adaptive, meaning that Zoom will choose the most appropriate codec for each user's environment.
+Right-clicking text that is in an email displays a menu, providing options to copy or translate the text.
+Users can import their emails from Office 365 to their Zoom Mail account.
+Delegators can move emails or filter emails into a private label in the inbox. Delegates cannot see or access emails that are in the private label.
+Delegates can permanently leave an inbox they are delegated. The delegator will be notified if a delegate chooses to leave their inbox.
+When scheduling an event, users can mark attendees Optional so that these attendees know they are not required to join.Once the meeting is created, optional attendees will receive invitation emails that indicate they are not required to join the meeting.
+When users create a Zoom Calendar invite, they can add a new or existing whiteboard directly in their invite. When users attach a whiteboard to an invite, it becomes a simplified link in the email invite.
+The suggested time automatically recommends available time slots based on all attendees' availability. Previously, when scheduling an event/meeting, the host manually looked at each attendee's availability to find a mutually available time. Note: This feature is currently only available for Google and Zoom Calendar users.
+Improve video quality in large webinars with more than 10k attendees by allowing a higher upload bitrate.
+Screen sharing has been enhanced to allow meeting participants to share 2 desktop screens at once. Previously, participants could only share one desktop or multiple different open programs at the same time.
+When sending or receiving a call to join a meeting, users will now be able to minimize the notification, allowing them to return to the previous screen without having to immediately dismiss or cancel the call in order to briefly return to task.
+Seamlessly transition Zoom Webinars from mobile to desktop and back to mobile, allowing users to take advantage of the mobility of the mobile client and the more feature-rich desktop client to suit their needs.
+Users can quickly make phone calls within a one-on-one chat, through the phone call option in the header. Previously, the option to make a phone call was not available through a 1:1 chat.
+Users can import their emails from Gmail to their Zoom Email account.
+Users can access and use shared inboxes from Zoom Mail.
+Users can mention other users when composing an email. Users can type @username to highlight other users’ names in an email, and those users will be added to the recipients list if they are not already included.
+Users can choose to display or hide all their declined meetings on their calendar.
+Users can control settings for Google and Microsoft in the Zoom client’s Calendar Settings. Previously, users had to return to the provider’s native calendar page to access those calendar’s settings.
+Users who have Zoom Calendar enabled can open the sidebar scheduler that has the Find a Time feature when scheduling meetings in the Home tab, calendar, or channels. Users who have Zoom Calendar disabled will continue to use the existing scheduler pop-up window.
+When enabled, hosts and participants with a calendar integration set up can view meeting assets, which are a helpful way to keep track of important details before, during, and after the meeting. Meeting assets include participant join status, meeting chat links and attachments, and recordings.
+Users can silence any incoming calls as desired.
+If a user belongs to a shared line group, they have the ability to include additional participants in calls that they have barged in (interrupted). In such calls, it is possible to add up to 10 participants.
+If enabled by an admin, agents can view live transcriptions during voice engagements. Admins can enable a prompt to play when the transcription has started or ended.
