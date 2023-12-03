@@ -1,5 +1,7 @@
 import readXlsxFile, { readSheetNames } from "read-excel-file/node";
 import WordPOS from "wordpos";
+import similarity from "sentence-similarity";
+import similarityScore from "similarity-score";
 
 const wordpos = new WordPOS();
 
@@ -74,6 +76,82 @@ const getNounsVerbs = async (allHistoricalFeatures) => {
   return allTermsRewards;
 };
 
-const getFeaturesRewards = (historicalFeatures, availableFeatures, term) => {};
+/**
+ * Splits the given feature into an array of words
+ * @param {string} feature The feature to be split up into words
+ * @returns An array of the words in the feature sentence
+ */
+const splitFeatureIntoWords = (feature) => {
+  // Split each feature sentence by spaces
+  let reviewWords = feature.split(" ");
 
-export { getNounsVerbs, getFeaturesFromFile, getFeaturesRewards };
+  // For each word in the feature, remove any punctuation and change the word to lowercase
+  reviewWords.forEach((word, index) => {
+    reviewWords[index] = word
+      .toLowerCase()
+      .replaceAll(".", "")
+      .replaceAll(",", "")
+      .replaceAll("?", "")
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("!", "")
+      .replaceAll(":", "")
+      .replaceAll("&", "")
+      .replaceAll("-", "")
+      .replaceAll("'", "")
+      .replaceAll(";", "");
+  });
+
+  // Remove any empty strings that occur after removing punctuation
+  reviewWords.filter((word) => word.length > 0);
+
+  // Return the array of formatted words in the feature
+  return reviewWords;
+};
+
+/**
+ * Calculate the reward for selecting each available feature and return the available feature with the highest reward
+ * Rewards are calculated by the average textual similarity scores when comparing to each of the original historical documents containing that term
+ * @param {string[]} historicalFeatures The features that have been implemented
+ * @param {string[]} availableFeatures The features that haven't yet been implemented
+ * @param {string} term The selected term
+ */
+const chooseAvailableFeature = (
+  historicalFeatures,
+  availableFeatures,
+  term
+) => {
+  // Get all of the historical features that contain the term
+  const historicalWithTerm = historicalFeatures.filter((feature) =>
+    feature.toLowerCase().includes(term)
+  );
+
+  // An array to represent the best available feature (format is: [reward, feature text])
+  let max = [0, null];
+
+  // Calculate the reward for each available feature
+  availableFeatures.forEach((availableFeature) => {
+    const availableFeatWords = splitFeatureIntoWords(availableFeature);
+    let totalReward = 0;
+    historicalWithTerm.forEach((historicalFeature) => {
+      const historicalFeatWords = splitFeatureIntoWords(historicalFeature);
+
+      const score = similarity(availableFeatWords, historicalFeatWords, {
+        f: similarityScore.winklerMetaphone,
+        options: { threshold: 0 },
+      }).score;
+
+      totalReward += score;
+    });
+
+    // Divide the totalReward by the number of historical features with the term to get the average
+    totalReward /= historicalWithTerm.length;
+
+    if (totalReward > max[0]) max = [totalReward, availableFeature];
+  });
+
+  // Return the available feature with the highest reward
+  return max[1];
+};
+
+export { getNounsVerbs, getFeaturesFromFile, chooseAvailableFeature };

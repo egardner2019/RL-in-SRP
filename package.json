@@ -19,6 +19,8 @@
   "homepage": "https://github.com/egardner2019/RL-in-SRP#readme",
   "dependencies": {
     "read-excel-file": "^5.7.1",
+    "sentence-similarity": "^3.1.0",
+    "similarity-score": "^1.0.0",
     "wordpos": "^2.1.0"
   }
 }
