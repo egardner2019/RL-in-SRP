@@ -155,6 +155,12 @@ const chooseAvailableFeature = (
   return max[1];
 };
 
+/**
+ * Print the features to the appropriate results file
+ * @param {boolean} isSelected Does the featuresArray contain the selected features (true) or the remaining features (false)?
+ * @param {{feature: string, realRelease: number}[]} featuresArray Either the array of the selected features or the remaining features
+ * @param {"Zoom" | "Webex" | "Discord"} dataSet The data set that created these results
+ */
 const writeResultsToFiles = (isSelected, featuresArray, dataSet) => {
   const filePath = `results/${dataSet}/${
     isSelected ? "selected" : "remaining"
@@ -172,9 +178,131 @@ const writeResultsToFiles = (isSelected, featuresArray, dataSet) => {
   writeStream.end();
 };
 
+/**
+ * Make a percentage pretty for printing to the console and .txt files
+ * @param {*} num The number or (NaN) to be formatted
+ * @returns The formatted number
+ */
+const formatNumber = (num) => {
+  if (isNaN(num)) {
+    return "N/A";
+  } else {
+    return (num * 100).toFixed(2) + "%";
+  }
+};
+
+/**
+ * Calculate the accuracy, precision, recall, and F-score
+ * @param {{feature: string, realRelease: number}[]} selectedFeatures The array of selected features
+ * @param {{feature: string, realRelease: number}[]} remainingFeatures The array of the features that weren't selected
+ * @param {"Zoom" | "Webex" | "Discord"} dataSet The data set that created these results
+ */
+const calculateEvaluationMetrics = (
+  selectedFeatures,
+  remainingFeatures,
+  dataSet
+) => {
+  // Categorize the features
+  let truePosCount = 0; // labeled the 3rd release and actually the 3rd release
+  let falseNegCount = 0; // not labeled the 3rd release but actually is the 3rd release
+  let trueNegCount = 0; // not labeled the 3rd release and actually not labeled the 3rd release
+  let falsePosCount = 0; // labeled the 3rd release but not actually the 3rd release
+  selectedFeatures.forEach((feature) => {
+    if (feature.realRelease === 3) truePosCount++;
+    else falsePosCount++;
+  });
+  remainingFeatures.forEach((feature) => {
+    if (feature.realRelease !== 3) trueNegCount++;
+    else falseNegCount++;
+  });
+
+  // Calculate the metrics
+  const accuracy =
+    (truePosCount + trueNegCount) /
+    (truePosCount + trueNegCount + falsePosCount + falseNegCount);
+  const precision = truePosCount / (truePosCount + falsePosCount);
+  const recall = truePosCount / (truePosCount + falseNegCount);
+  const fScore = (2 * (precision * recall)) / (precision + recall);
+
+  // Print the results to the console
+  console.log(
+    `\n------------ Evaluation Metric Values for ${dataSet} ------------`
+  );
+  console.log("Accuracy:", formatNumber(accuracy));
+  console.log("Precision:", formatNumber(precision));
+  console.log("Recall:", formatNumber(recall));
+  console.log("F-Score:", formatNumber(fScore), "\n");
+
+  return {
+    accuracy: accuracy,
+    precision: precision,
+    recall: recall,
+    fScore: fScore,
+    dataSetName: dataSet,
+  };
+};
+
+/**
+ * Print the evaluation metrics to evaluationMetrics.txt
+ * @param {{accuracy: number, precision: number, recall: number, fScore: number, dataSetName: "Zoom" | "Webex" | "Discord"}[]} allMetrics
+ */
+const printEvaluationMetrics = (allMetrics) => {
+  const filePath = `results/evaluationMetrics.txt`;
+  const writeStream = fs.createWriteStream(filePath);
+
+  // Print the averages across the data sets
+  writeStream.write(
+    `------------ Average Evaluation Metric Values Across Data Sets ------------\n`
+  );
+  ["accuracy", "precision", "recall", "fScore"].forEach((metricName) => {
+    let availableMetrics = allMetrics.length;
+    writeStream.write(
+      `${
+        metricName === "fScore"
+          ? "F-Score"
+          : metricName.charAt(0).toUpperCase() + metricName.slice(1)
+      }: ${formatNumber(
+        allMetrics
+          // Get an array containing the metric value of each data set
+          .map((thisMetric) => thisMetric[metricName])
+          // Get the average of those metric values
+          .reduce((a, b) => {
+            if (isNaN(b)) {
+              availableMetrics--;
+              return a;
+            } else {
+              return a + b;
+            }
+          }) / availableMetrics
+      )}\n`
+    );
+  });
+
+  // Print the values for each data set
+  allMetrics.forEach((dataSet) => {
+    writeStream.write(
+      `\n------------ Evaluation Metric Values for ${dataSet.dataSetName} ------------\n`
+    );
+    writeStream.write(`Accuracy: ${formatNumber(dataSet.accuracy)}\n`);
+    writeStream.write(`Precision: ${formatNumber(dataSet.precision)}\n`);
+    writeStream.write(`Recall: ${formatNumber(dataSet.recall)}\n`);
+    writeStream.write(`F-Score: ${formatNumber(dataSet.fScore)}\n`);
+  });
+
+  writeStream.on("error", (error) => {
+    console.error(
+      `Unable to write data to ${filePath}. Error: ${error.message}`
+    );
+  });
+
+  writeStream.end();
+};
+
 export {
   getNounsVerbs,
   getFeaturesFromFile,
   chooseAvailableFeature,
   writeResultsToFiles,
+  calculateEvaluationMetrics,
+  printEvaluationMetrics,
 };

@@ -3,12 +3,20 @@ import {
   getNounsVerbs,
   chooseAvailableFeature,
   writeResultsToFiles,
+  calculateEvaluationMetrics,
+  printEvaluationMetrics,
 } from "./helperMethods.js";
 
-// The number of features desired for the next iteration
+// The data sets on which to run this program
+const dataSets = ["Discord", "Webex", "Zoom"];
+
+// The number of features desired for the next release
 const numFeatures = 20;
 
-const mainLogic = async (dataSet) => {
+// The evaluation metrics of each data set
+let allMetrics = [];
+
+const mainMethod = async (dataSet) => {
   // Get the features from the .xlsx file (array of arrays, with each subarray designated to a release)
   const allFeaturesByRelease = await getFeaturesFromFile(dataSet);
 
@@ -20,11 +28,11 @@ const mainLogic = async (dataSet) => {
 
   // Get all of the available features (from the 3 most recent releases) with their real assigned releases
   let availableFeatures = [];
-  allFeaturesByRelease.slice(1, 4).forEach((release) => {
+  allFeaturesByRelease.slice(1, 4).forEach((release, index) => {
     release.forEach((feature) => {
       availableFeatures.push({
         feature: feature,
-        realRelease: release,
+        realRelease: index + 1,
       });
     });
   });
@@ -37,7 +45,8 @@ const mainLogic = async (dataSet) => {
   );
 
   // Until the correct number of features (numFeatures) have been selected, ...
-  while (selectedFeatures.length !== numFeatures) {
+  for (let currentIndex = 1; currentIndex <= numFeatures; currentIndex++) {
+    // while (selectedFeatures.length !== numFeatures) {
     // Select the term from the historical vocabulary with the highest reward
     const selectedTerm = Object.keys(allTerms).reduce((prev, current) => {
       return allTerms[prev] > allTerms[current] ? prev : current;
@@ -50,7 +59,7 @@ const mainLogic = async (dataSet) => {
       selectedTerm
     );
 
-    console.log(` • `, chosenFeature);
+    console.log(`${currentIndex}. ${chosenFeature}`);
 
     // Add the selected feature to the list of features to be implemented in the next iteration
     selectedFeatures.push(
@@ -70,7 +79,15 @@ const mainLogic = async (dataSet) => {
   writeResultsToFiles(false, availableFeatures, dataSet);
 
   // Evaluate the effectiveness of this method (accuracy, precision, recall) -- correct means the feature is from the third release!
+  allMetrics.push(
+    calculateEvaluationMetrics(selectedFeatures, availableFeatures, dataSet)
+  );
+
+  // Print the metrics for all data sets to a file if we have evaluated all of the data sets
+  if (allMetrics.length === dataSets.length) {
+    printEvaluationMetrics(allMetrics);
+  }
 };
 
 // Run the main method on the Discord, Webex, and Zoom data sets
-["Discord", "Webex", "Zoom"].forEach((product) => mainLogic(product));
+dataSets.forEach((dataSet) => mainMethod(dataSet));

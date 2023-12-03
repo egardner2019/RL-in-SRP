@@ -1,0 +1,23 @@
+------------ Average Evaluation Metric Values Across Data Sets ------------
+Accuracy: 42.19%
+Precision: 26.67%
+Recall: 56.06%
+F-Score: 33.05%
+
+------------ Evaluation Metric Values for Discord ------------
+Accuracy: 48.28%
+Precision: 25.00%
+Recall: 100.00%
+F-Score: 40.00%
+
+------------ Evaluation Metric Values for Webex ------------
+Accuracy: 34.29%
+Precision: 20.00%
+Recall: 36.36%
+F-Score: 25.81%
+
+------------ Evaluation Metric Values for Zoom ------------
+Accuracy: 44.00%
+Precision: 35.00%
+Recall: 31.82%
+F-Score: 33.33%
