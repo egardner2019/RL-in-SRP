@@ -13,8 +13,8 @@ An application of reinforcement learning (RL) to the strategic release planning 
     3. Using the calculated rewards, select a feature from the list of available future features.
     4. Add this feature to the list of features to be implemented in the next iteration.
     5. Remove the selected feature from the list of available future features and decrease the reward of the selected term by 50%.
-4. Print the selected and unselected features to separate files.
-5. Evaluate the effectiveness of the method (accuracy, precision, recall) using previously planned releases.
+4. Print the selected and remaining features to separate files.
+5. Evaluate the effectiveness of the method (accuracy, precision, recall, F-score) using previously planned releases.
 
 <h2>Run this Project</h2>
 
