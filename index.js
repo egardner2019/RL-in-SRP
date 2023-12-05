@@ -46,7 +46,6 @@ const mainMethod = async (dataSet) => {
 
   // Until the correct number of features (numFeatures) have been selected, ...
   for (let currentIndex = 1; currentIndex <= numFeatures; currentIndex++) {
-    // while (selectedFeatures.length !== numFeatures) {
     // Select the term from the historical vocabulary with the highest reward
     const selectedTerm = Object.keys(allTerms).reduce((prev, current) => {
       return allTerms[prev] > allTerms[current] ? prev : current;
